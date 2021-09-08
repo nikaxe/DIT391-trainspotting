@@ -291,6 +291,7 @@ public class Lab1 {
         tsi.setSpeed(id, 0);
         Thread.sleep(3000);
         direction = !direction;
+        maxSpeed = -maxSpeed;
         tsi.setSpeed(id, maxSpeed);
     }
     public void stopTrain() throws CommandException {
