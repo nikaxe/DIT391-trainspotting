@@ -6,12 +6,13 @@ import TSim.*;
 
 public class Lab1 {
   // Semaphores
+  Semaphore brown = new Semaphore(0, true);
   Semaphore blue = new Semaphore(1, true);
   Semaphore orange = new Semaphore(1, true);
   Semaphore purple = new Semaphore(1, true);
   Semaphore yellow = new Semaphore(1, true);
   Semaphore red = new Semaphore(1, true);
-  Semaphore pink = new Semaphore(1, true);
+  Semaphore pink = new Semaphore(0, true);
 
   Map <Position,Sensor> sensors = new HashMap<>();
 
@@ -91,6 +92,7 @@ public class Lab1 {
         train.stopTrain();
         purple.acquire();
         tsi.setSwitch(17, 7, TSimInterface.SWITCH_RIGHT);
+        brown.release();
         orange.release();
         train.startTrain();
       }
@@ -112,9 +114,15 @@ public class Lab1 {
     sensors.put(new Position(19, 7), new Sensor(new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException{
         train.stopTrain();
-        if(orange.tryAcquire(1))
-          tsi.setSwitch(17, 7, TSimInterface.SWITCH_RIGHT);
-        else
+        if(brown.tryAcquire(1)){
+          if(orange.tryAcquire(1))
+            tsi.setSwitch(17, 7, TSimInterface.SWITCH_RIGHT);
+          else{
+            brown.release();
+            tsi.setSwitch(17, 7, TSimInterface.SWITCH_LEFT);
+          }
+        }
+        else 
           tsi.setSwitch(17, 7, TSimInterface.SWITCH_LEFT);
         train.startTrain();
       }
