@@ -208,6 +208,7 @@ public class Lab1 {
         train.stopTrain();
         red.acquire();
         tsi.setSwitch(3, 11, TSimInterface.SWITCH_LEFT);
+        pink.release();
         if(yellow.tryAcquire(1))
           tsi.setSwitch(4, 9, TSimInterface.SWITCH_LEFT);
         else
