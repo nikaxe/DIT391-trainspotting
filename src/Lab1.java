@@ -289,7 +289,7 @@ public class Lab1 {
     }
     public void changeDirection() throws CommandException, InterruptedException{
         tsi.setSpeed(id, 0);
-        wait(3000);
+        Thread.sleep(3000);
         direction = !direction;
         tsi.setSpeed(id, maxSpeed);
     }
