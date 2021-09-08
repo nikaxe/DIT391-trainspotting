@@ -1,79 +1,514 @@
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Semaphore;
 
 import TSim.*;
 
 public class Lab1 {
+  // Semaphores
+  Semaphore blue = new Semaphore(1, true);
+  Semaphore orange = new Semaphore(1, true);
+  Semaphore purple = new Semaphore(1, true);
+  Semaphore yellow = new Semaphore(1, true);
+  Semaphore red = new Semaphore(1, true);
+  Semaphore pink = new Semaphore(0, true);
+
+  Map <Position,Sensor> sensors = new HashMap<>();
 
   public Lab1(int speed1, int speed2) {
     TSimInterface tsi = TSimInterface.getInstance();
 
-    try {
-      tsi.setSpeed(1,speed1);
-    }
-    catch (CommandException e) {
-      e.printStackTrace();    // or only e.getMessage() for the error
-      System.exit(1);
-    }
-  }
-}
+    // Sensors
+    // 1
+    sensors.put(new Position(0, 0), new Sensor(new SensorAction(){
+      public void action(Train train)throws CommandException, InterruptedException {
+        train.changeDirection();
+      }
+    }, null));
+    // 2
+    sensors.put(new Position(0, 0), new Sensor(new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException {
+        train.changeDirection();
+      }
+    }, null));
+    // 3
+    sensors.put(new Position(0, 0), new Sensor(new SensorAction() {
+      public void action(Train train) {
+        blue.release();
+      }
+    }, new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException {
+        blue.acquire();
+      }
+    }));
+    // 4
+    sensors.put(new Position(0, 0), new Sensor(new SensorAction() {
+      public void action(Train train) {
+        blue.release();
+      }
+    }, new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException {
+        train.stopTrain();
+        blue.acquire();
+        orange.acquire();
+        train.startTrain();
+      }
+    }));
+    // 5
+    sensors.put(new Position(0, 0), new Sensor(new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException{
+        train.stopTrain();
+        blue.acquire();
+        orange.release();
+        train.startTrain();
+      }
+    }, new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException {
+        blue.release();
+      }
+    }));
+    // 6
+    sensors.put(new Position(0, 0), new Sensor(new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException{
+        train.stopTrain();
+        blue.acquire();
+        train.startTrain();
+      }
+    }, new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException {
+        blue.release();
+      }
+    }));
+    // 7
+    sensors.put(new Position(0, 0), new Sensor(new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException{
+        purple.release();
+      }
+    }, new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException {
+        train.stopTrain();
+        purple.acquire();
+        tsi.setSwitch(0, 0, TSimInterface.SWITCH_RIGHT);
+        orange.release();
+        train.startTrain();
+      }
+    }));
+    // 8
+    sensors.put(new Position(0, 0), new Sensor(new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException{
+        purple.release();
+      }
+    }, new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException {
+        train.stopTrain();
+        purple.acquire();
+        tsi.setSwitch(0, 0, TSimInterface.SWITCH_LEFT);
+        train.startTrain();
+      }
+    }));
+    // 9
+    sensors.put(new Position(0, 0), new Sensor(new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException{
+        train.stopTrain();
+        if(orange.tryAcquire(1))
+          tsi.setSwitch(0, 0, TSimInterface.SWITCH_RIGHT);
+        else
+          tsi.setSwitch(0, 0, TSimInterface.SWITCH_LEFT);
+        train.startTrain();
+      }
+    }, null));
+    // 10
+    sensors.put(new Position(0, 0), new Sensor(new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException{
+        yellow.release();
+      }
+    }, new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException {
+        train.stopTrain();
+        if(yellow.tryAcquire(1))
+          tsi.setSwitch(0, 0, TSimInterface.SWITCH_RIGHT);
+        else
+          tsi.setSwitch(0, 0, TSimInterface.SWITCH_LEFT);
+        train.startTrain();
+      }
+    }));
+    // 11
+    sensors.put(new Position(0, 0), new Sensor(new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException{
+        train.stopTrain();
+        purple.acquire();
+        tsi.setSwitch(0, 0, TSimInterface.SWITCH_RIGHT);
+        train.startTrain();
+      }
+    }, new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException {
+        purple.release();
+      }
+    }));
+    // 12
+    sensors.put(new Position(0, 0), new Sensor(new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException{
+        train.stopTrain();
+        purple.acquire();
+        tsi.setSwitch(0, 0, TSimInterface.SWITCH_LEFT);
+        train.startTrain();
+      }
+    }, new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException {
+        purple.release();
+      }
+    }));
+    // 13
+    sensors.put(new Position(0, 0), new Sensor(new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException{
+        red.release();
+      }
+    }, new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException {
+        train.stopTrain();
+        red.acquire();
+        tsi.setSwitch(0, 0, TSimInterface.SWITCH_LEFT);
+        if(pink.tryAcquire(1))
+          tsi.setSwitch(0, 0, TSimInterface.SWITCH_LEFT);
+        else
+          tsi.setSwitch(0, 0, TSimInterface.SWITCH_RIGHT);
+        train.startTrain();
+      }
+    }));
+    // 14
+    sensors.put(new Position(0, 0), new Sensor(new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException{
+        red.release();
+      }
+    }, new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException {
+        train.stopTrain();
+        red.acquire();
+        tsi.setSwitch(0, 0, TSimInterface.SWITCH_RIGHT);
+        if(pink.tryAcquire(1))
+          tsi.setSwitch(0, 0, TSimInterface.SWITCH_LEFT);
+        else
+          tsi.setSwitch(0, 0, TSimInterface.SWITCH_RIGHT);
+        train.startTrain();
+      }
+    }));
+    // 15
+    sensors.put(new Position(0, 0), new Sensor(new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException{
+        train.stopTrain();
+        red.acquire();
+        tsi.setSwitch(0, 0, TSimInterface.SWITCH_LEFT);
+        if(yellow.tryAcquire(1))
+          tsi.setSwitch(0, 0, TSimInterface.SWITCH_LEFT);
+        else
+          tsi.setSwitch(0, 0, TSimInterface.SWITCH_RIGHT);
+        train.startTrain();
+      }
+    }, new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException {
+        red.release();
+      }
+    }));
+    // 16
+    sensors.put(new Position(0, 0), new Sensor(new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException{
+        train.stopTrain();
+        red.acquire();
+        tsi.setSwitch(0, 0, TSimInterface.SWITCH_RIGHT);
+        if(yellow.tryAcquire(1))
+          tsi.setSwitch(0, 0, TSimInterface.SWITCH_LEFT);
+        else
+          tsi.setSwitch(0, 0, TSimInterface.SWITCH_RIGHT);
+        train.startTrain();
+      }
+    }, new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException {
+        red.release();
+      }
+    }));
+    // 17
+    sensors.put(new Position(0, 0), new Sensor(null, 
+    new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException {
+        train.changeDirection();
+      }
+    }));
+    // 18
+    sensors.put(new Position(0, 0), new Sensor(null, 
+    new SensorAction() {
+      public void action(Train train) throws CommandException, InterruptedException {
+        train.changeDirection();
+      }
+    }));
 
-class Train implements Runnable {
-  private TSimInterface tsi;
-  private int id;
+    Thread train1 = new Thread(new Train(tsi, 1, speed1));
+    Thread train2 = new Thread(new Train(tsi, 2, speed2));
 
-  public Train(TSimInterface tsi, int id) {
-    this.tsi = tsi;
-    this.id = id;
-  }
-
-  @Override
-  public void run() {
-    try {
-      while(true) {
-        SensorEvent se = tsi.getSensor(id);
-
-      }  
-    } catch (CommandException e) {
-
-    } catch(InterruptedException e) {
-
-    } finally{}
-
+    train1.start();
+    train2.start();
   }
   
-}
+  private class Train implements Runnable {
+    private TSimInterface tsi;
+    private int id;
+    private int maxSpeed;
+    private boolean direction;
 
-class Sensor {
-  private Position pos;
-  private Semaphore semaphore;
+    public Train(TSimInterface tsi, int id, int maxSpeed) {
+      this.tsi = tsi;
+      this.id = id;
+      this.maxSpeed = maxSpeed;
+    }
 
-  public Sensor(Semaphore sem, int x, int y) {
-    semaphore = sem;
-    pos = new Position(x, y);
+    @Override
+    public void run() {
+      try {
+        tsi.setSpeed(id, maxSpeed);
+        while(true) {
+          SensorEvent se = tsi.getSensor(id);
+          int x = se.getXpos();
+          int y = se.getYpos();
+          Sensor hitSensor = sensors.get(new Position(x, y));
+          if(se.getStatus() == SensorEvent.ACTIVE)
+            hitSensor.doAction(this, direction);
+        }  
+      } catch (Exception e) {
+        e.printStackTrace();
+        System.exit(1);
+      }
+    }
+    public void changeDirection() throws CommandException, InterruptedException{
+        tsi.setSpeed(id, 0);
+        wait(3000);
+        direction = !direction;
+        tsi.setSpeed(id, maxSpeed);
+    }
+    public void stopTrain() throws CommandException {
+        tsi.setSpeed(id, 0);
+    }
+    public void startTrain() throws CommandException {
+      tsi.setSpeed(id, maxSpeed);
   }
-
-  public Sensor(Semaphore sem, Position pos) {
-    semaphore = sem;
-    this.pos = pos;
   }
-
-  public boolean ticketAvailable() {
-    return semaphore.availablePermits() > 0;
-  }
-
-}
-
-class Position {
-  private int x;
-  private int y;
-  public Position(int x, int y) {
-    this.x = x;
-    this.y = y;
-  }
-  public int getX() { return x; }
-  public int getY() { return y; }
   
-  public boolean equals(Position pos) {
-    return x == pos.getX() && y == pos.getY();
+  private interface SensorAction {
+    public void action(Train train) throws CommandException, InterruptedException;
+  }
+
+  private class Sensor {
+    private SensorAction upAction;
+    private SensorAction downAction;
+    public Sensor(SensorAction up, SensorAction down) {
+      upAction = up;
+      downAction = down;
+    }
+    public void doAction(Train train, boolean direction) throws CommandException, InterruptedException{
+      if(direction)
+        doUp(train);
+      else 
+        doDown(train);
+    }
+    private void doUp(Train train) throws CommandException, InterruptedException{
+      if(upAction != null)
+        upAction.action(train);
+    }
+    private void doDown(Train train) throws CommandException, InterruptedException{
+      if(downAction != null)
+        downAction.action(train);
+    }
+  }
+  
+  private class Position {
+    private final int x;
+    private final int y;
+    public Position(int x, int y) {
+      this.x = x;
+      this.y = y;
+    }
+    public int getX() { return x; }
+    public int getY() { return y; }
+    
+    @Override
+    public boolean equals(Object obj) {
+      if(obj == null || getClass() != obj.getClass())
+        return false;
+      Position other = (Position) obj;
+      return x == other.getX() && y == other.getY();
+    }
+    @Override
+    public int hashCode() {
+      int h = 17;
+      h += x * 7 + y * 23;
+      return h;
+    }
   }
 }
+/*
+CommandException - Exception in TSim
+Thrown when a command to TSim fails.
+CommandException(String) - Constructor for exception TSim.CommandException
+Constructs an CommandException with the specified detailed error message.
+*/
+
+
+/*
+direction == true is the upwards direction
+1:
+  direction: 
+    stop train
+    wait 2s
+    start train in the other direction
+  !direction: 
+    do nothing
+2:
+  direction: 
+    stop train
+    wait 2s
+    start train in the other direction
+  !direction:
+    do nothing
+3: 
+  direction:
+    release blue
+  !direction:
+    stop train
+    acquire blue
+    start train
+4: 
+  direction:
+    release blue
+  !direction:
+    stop train
+    acquire blue
+    acquire orange
+    start train
+5:
+  direction:
+    stop train
+    acquire blue
+    release orange
+    start train
+  !direction:
+    release blue
+6: 
+  direction: 
+    stop train
+    acquire blue
+    start train
+  !direction:
+    release blue
+7:
+  direction:
+    release purple
+  !direction:
+    stop train
+    acquire purple
+    set switch 1 right
+    release orange
+    start train
+8:
+  direction:
+    release purple
+  !direction:
+    stop train
+    acquire purple
+    set switch 1 left
+    start train
+9:
+  direction:
+    stop train
+    if(tryacquire orange)
+      set switch 1 right
+    else
+      set switch 1 left
+    start train
+  !direction:
+    do nothing
+10:
+  direction:
+    release yellow
+  !direction:
+    stop train
+    if(tryacquire yellow)
+      set switch 2 right
+    else
+      set switch 2 left
+    start train
+11:
+  direction:
+    stop train
+    acquire purple
+    set switch 2 right
+    start train
+  !direction:
+    release purple
+12:
+  direction:
+    stop train
+    acquire purple
+    set switch 2 left
+    start train
+  !direction:
+    release purple
+13:
+  direction:
+    release red
+  !direction:
+    stop train
+    acquire red
+    set switch 3 left
+    if(tryacquire pink)
+      set switch 4 left
+    else
+      set switch 4 right
+    start train
+14:
+  direction:
+    release red
+  !direction:
+    stop train
+    acquire red
+    set switch 3 right
+    if(tryacquire pink)
+      set switch 4 left
+    else
+      set switch 4 right
+    start train
+15:
+  direction:
+    stop train
+    acquire red
+    set switch 4 left
+    if(tryacquire yellow)
+      set switch 3 left
+    else
+      set switch 3 right
+    start train
+  !direction:
+    release red
+16:
+  direction:
+    stop train
+    acquire red 
+    set switch 4 right
+    if(tryacquire yellow)
+      set switch 3 left
+    else
+      set switch 3 right
+  !direction:
+    release red
+17:
+  direction:
+    do nothing
+  !direction:
+    stop train 
+    wait 3s
+    start train in other direction
+18:
+  direction:
+    do nothing
+  !direction:
+    stop train 
+    wait 3s
+    start train in other direction
+*/
