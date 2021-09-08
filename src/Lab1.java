@@ -243,8 +243,8 @@ public class Lab1 {
       }
     }));
 
-    Thread train1 = new Thread(new Train(tsi, 1, speed1));
-    Thread train2 = new Thread(new Train(tsi, 2, speed2));
+    Thread train1 = new Thread(new Train(false, 1, speed1));
+    Thread train2 = new Thread(new Train(true, 2, speed2));
 
     train1.start();
     train2.start();
@@ -256,8 +256,8 @@ public class Lab1 {
     private int maxSpeed;
     private boolean direction;
 
-    public Train(TSimInterface tsi, int id, int maxSpeed) {
-
+    public Train(boolean dir, int id, int maxSpeed) {
+      direction = dir;
       this.id = id;
       this.maxSpeed = maxSpeed;
     }
