@@ -11,12 +11,14 @@ public class Lab1 {
   Semaphore purple = new Semaphore(1, true);
   Semaphore yellow = new Semaphore(1, true);
   Semaphore red = new Semaphore(1, true);
-  Semaphore pink = new Semaphore(0, true);
+  Semaphore pink = new Semaphore(1, true);
 
   Map <Position,Sensor> sensors = new HashMap<>();
 
+  TSimInterface tsi;
+
   public Lab1(int speed1, int speed2) {
-    TSimInterface tsi = TSimInterface.getInstance();
+    tsi = TSimInterface.getInstance();
 
     // Sensors
     // 1
@@ -249,13 +251,13 @@ public class Lab1 {
   }
   
   private class Train implements Runnable {
-    private TSimInterface tsi;
+
     private int id;
     private int maxSpeed;
     private boolean direction;
 
     public Train(TSimInterface tsi, int id, int maxSpeed) {
-      this.tsi = tsi;
+
       this.id = id;
       this.maxSpeed = maxSpeed;
     }
