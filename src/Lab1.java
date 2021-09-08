@@ -251,14 +251,14 @@ public class Lab1 {
       }
     }));
 
-    Thread train1 = new Thread(new Train(false, 1, speed1));
-    Thread train2 = new Thread(new Train(true, 2, speed2));
+    Thread train1 = new Train(false, 1, speed1);
+    Thread train2 = new Train(true, 2, speed2);
 
     train1.start();
     train2.start();
   }
   
-  private class Train implements Runnable {
+  private class Train extends Thread {
 
     private int id;
     private int maxSpeed;
