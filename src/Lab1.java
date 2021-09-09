@@ -41,7 +41,9 @@ public class Lab1 {
       }
     }, new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException {
+        train.stopTrain();
         blue.acquire();
+        train.startTrain();
       }
     }));
     // 4
@@ -182,6 +184,7 @@ public class Lab1 {
           tsi.setSwitch(3, 11, TSimInterface.SWITCH_LEFT);
         else
           tsi.setSwitch(3, 11, TSimInterface.SWITCH_RIGHT);
+        yellow.release();
         train.startTrain();
       }
     }));
@@ -260,7 +263,6 @@ public class Lab1 {
   }
   
   private class Train extends Thread {
-
     private int id;
     private int maxSpeed;
     private boolean direction;
@@ -289,18 +291,18 @@ public class Lab1 {
       }
     }
     public void changeDirection() throws CommandException, InterruptedException{
-        tsi.setSpeed(id, 0);
-        Thread.sleep(3000);
-        direction = !direction;
-        maxSpeed = -maxSpeed;
-        tsi.setSpeed(id, maxSpeed);
+      tsi.setSpeed(id, 0);
+      Thread.sleep(3000);
+      direction = !direction;
+      maxSpeed = -maxSpeed;
+      tsi.setSpeed(id, maxSpeed);
     }
     public void stopTrain() throws CommandException {
-        tsi.setSpeed(id, 0);
+      tsi.setSpeed(id, 0);
     }
     public void startTrain() throws CommandException {
       tsi.setSpeed(id, maxSpeed);
-  }
+    }
   }
   
   private interface SensorAction {
