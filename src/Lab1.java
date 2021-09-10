@@ -23,19 +23,19 @@ public class Lab1 {
 
     // Sensors
     // 1
-    sensors.put(new Position(15, 3), new Sensor(new SensorAction(){
+    sensors.put(new Position(14, 3), new Sensor(new SensorAction(){
       public void action(Train train)throws CommandException, InterruptedException {
         train.changeDirection();
       }
     }, null));
     // 2
-    sensors.put(new Position(15, 5), new Sensor(new SensorAction() {
+    sensors.put(new Position(14, 5), new Sensor(new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException {
         train.changeDirection();
       }
     }, null));
     // 3
-    sensors.put(new Position(8, 5), new Sensor(new SensorAction() {
+    sensors.put(new Position(9, 5), new Sensor(new SensorAction() {
       public void action(Train train) {
         blue.release();
       }
@@ -47,7 +47,7 @@ public class Lab1 {
       }
     }));
     // 4
-    sensors.put(new Position(6, 7), new Sensor(new SensorAction() {
+    sensors.put(new Position(6, 6), new Sensor(new SensorAction() {
       public void action(Train train) {
         blue.release();
       }
@@ -60,7 +60,7 @@ public class Lab1 {
       }
     }));
     // 5
-    sensors.put(new Position(10, 7), new Sensor(new SensorAction() {
+    sensors.put(new Position(11, 7), new Sensor(new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException{
         train.stopTrain();
         blue.acquire();
@@ -73,7 +73,7 @@ public class Lab1 {
       }
     }));
     // 6
-    sensors.put(new Position(10, 8), new Sensor(new SensorAction() {
+    sensors.put(new Position(11, 8), new Sensor(new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException{
         train.stopTrain();
         blue.acquire();
@@ -85,7 +85,7 @@ public class Lab1 {
       }
     }));
     // 7
-    sensors.put(new Position(15, 7), new Sensor(new SensorAction() {
+    sensors.put(new Position(14, 7), new Sensor(new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException{
         purple.release();
       }
@@ -100,7 +100,7 @@ public class Lab1 {
       }
     }));
     // 8
-    sensors.put(new Position(15, 8), new Sensor(new SensorAction() {
+    sensors.put(new Position(14, 8), new Sensor(new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException{
         purple.release();
       }
@@ -113,7 +113,7 @@ public class Lab1 {
       }
     }));
     // 9
-    sensors.put(new Position(19, 7), new Sensor(new SensorAction() {
+    sensors.put(new Position(19, 8), new Sensor(new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException{
         train.stopTrain();
         if(brown.tryAcquire(1)){
@@ -130,7 +130,7 @@ public class Lab1 {
       }
     }, null));
     // 10
-    sensors.put(new Position(17, 9), new Sensor(new SensorAction() {
+    sensors.put(new Position(18, 9), new Sensor(new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException{
         yellow.release();
       }
@@ -145,7 +145,7 @@ public class Lab1 {
       }
     }));
     // 11
-    sensors.put(new Position(13, 9), new Sensor(new SensorAction() {
+    sensors.put(new Position(12, 9), new Sensor(new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException{
         train.stopTrain();
         purple.acquire();
@@ -158,7 +158,7 @@ public class Lab1 {
       }
     }));
     // 12
-    sensors.put(new Position(13, 10), new Sensor(new SensorAction() {
+    sensors.put(new Position(12, 10), new Sensor(new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException{
         train.stopTrain();
         purple.acquire();
@@ -171,7 +171,7 @@ public class Lab1 {
       }
     }));
     // 13
-    sensors.put(new Position(6, 9), new Sensor(new SensorAction() {
+    sensors.put(new Position(7, 9), new Sensor(new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException{
         red.release();
       }
@@ -189,7 +189,7 @@ public class Lab1 {
       }
     }));
     // 14
-    sensors.put(new Position(6, 10), new Sensor(new SensorAction() {
+    sensors.put(new Position(7, 10), new Sensor(new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException{
         red.release();
       }
@@ -206,7 +206,7 @@ public class Lab1 {
       }
     }));
     // 15
-    sensors.put(new Position(5, 11), new Sensor(new SensorAction() {
+    sensors.put(new Position(6, 11), new Sensor(new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException{
         train.stopTrain();
         red.acquire();
@@ -224,7 +224,7 @@ public class Lab1 {
       }
     }));
     // 16
-    sensors.put(new Position(5, 13), new Sensor(new SensorAction() {
+    sensors.put(new Position(6, 13), new Sensor(new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException{
         train.stopTrain();
         red.acquire();
@@ -241,14 +241,14 @@ public class Lab1 {
       }
     }));
     // 17
-    sensors.put(new Position(14, 11), new Sensor(null, 
+    sensors.put(new Position(13, 11), new Sensor(null, 
     new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException {
         train.changeDirection();
       }
     }));
     // 18
-    sensors.put(new Position(14, 13), new Sensor(null, 
+    sensors.put(new Position(13, 13), new Sensor(null, 
     new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException {
         train.changeDirection();
