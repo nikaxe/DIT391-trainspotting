@@ -359,6 +359,10 @@ public class Lab1 {
     }
   }
 }
+
+// Ask ta if sensor map counts as shared variable 
+// good/bad idea to use bool default track in train
+
 /*
 CommandException - Exception in TSim
 Thrown when a command to TSim fails.
