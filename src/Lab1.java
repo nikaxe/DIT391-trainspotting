@@ -20,8 +20,16 @@ public class Lab1 {
 
   public Lab1(int speed1, int speed2) {
     tsi = TSimInterface.getInstance();
+    putSensors();
+    Thread train1 = new Train(false, 1, speed1);
+    Thread train2 = new Train(true, 2, speed2);
 
-    // Sensors
+    train1.start();
+    train2.start();
+  }
+  
+  public void putSensors(){
+        // Sensors
     // 1
     sensors.put(new Position(14, 3), new Sensor(new SensorAction(){
       public void action(Train train)throws CommandException, InterruptedException {
@@ -253,13 +261,8 @@ public class Lab1 {
         train.changeDirection();
       }
     }));
-
-    Thread train1 = new Train(false, 1, speed1);
-    Thread train2 = new Train(true, 2, speed2);
-
-    train1.start();
-    train2.start();
   }
+  
   
   private class Train extends Thread {
     private int id;
