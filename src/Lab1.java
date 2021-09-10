@@ -130,12 +130,7 @@ public class Lab1 {
       }
     }, null));
     // 10
-    sensors.put(new Position(18, 9), new Sensor(new SensorAction() {
-      public void action(Train train) throws CommandException, InterruptedException{
-        yellow.release();
-        System.out.print("released yellow: " + yellow.availablePermits());
-      }
-    }, new SensorAction() {
+    sensors.put(new Position(18, 9), new Sensor(null, new SensorAction() {
       public void action(Train train) throws CommandException, InterruptedException {
         train.stopTrain();
         if(yellow.tryAcquire(1))
@@ -151,6 +146,8 @@ public class Lab1 {
         train.stopTrain();
         purple.acquire();
         tsi.setSwitch(15, 9, TSimInterface.SWITCH_RIGHT);
+        yellow.release();
+        System.out.print("released yellow: " + yellow.availablePermits());
         train.startTrain();
       }
     }, new SensorAction() {
