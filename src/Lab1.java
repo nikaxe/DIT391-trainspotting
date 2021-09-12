@@ -14,7 +14,7 @@ public class Lab1 {
   Semaphore red = new Semaphore(1, true);
   Semaphore pink = new Semaphore(0, true);
 
-  Map <Position, Sensor> sensors = new HashMap<>();
+  //Map <Position, Sensor> sensors = new HashMap<>();
 
   public Lab1(int speed1, int speed2) {
     
@@ -285,14 +285,16 @@ public class Lab1 {
           SensorEvent se = tsi.getSensor(id);
           int x = se.getXpos();
           int y = se.getYpos();
+          /*
           Sensor hitSensor = sensors.get(new Position(x, y));
           if(se.getStatus() == SensorEvent.ACTIVE)
             hitSensor.doAction(this, direction);
-
+          */
           
           if(se.getStatus() == SensorEvent.INACTIVE)
             continue; 
           Position sensorPos = new Position(x, y);
+          
           // 1 or 2 or 15 or 16
           if(sensorPos.equals(new Position(14, 3)) || sensorPos.equals(new Position(14, 5))
           || sensorPos.equals(new Position(13, 11)) || sensorPos.equals(new Position(13, 13))) {
@@ -323,12 +325,7 @@ public class Lab1 {
             else{
               stopTrain();
               purple.acquire();
-              if(onDefaultTrack){
-                tsi.setSwitch(17, 7, TSimInterface.SWITCH_RIGHT);
-                brown.release();
-              }
-              else 
-                tsi.setSwitch(17, 7, TSimInterface.SWITCH_LEFT);
+              releaseIfDefaultTrack(brown, 17, 7, true);
               tryToAcquire(yellow, 15, 9, true);
               startTrain();
             }
@@ -337,12 +334,7 @@ public class Lab1 {
             if(direction){
               stopTrain();
               purple.acquire();
-              if(onDefaultTrack){
-                tsi.setSwitch(15, 9, TSimInterface.SWITCH_RIGHT);
-                yellow.release();
-              }
-              else 
-                tsi.setSwitch(15, 9, TSimInterface.SWITCH_LEFT);
+              releaseIfDefaultTrack(yellow, 15, 9, true);
               tryToAcquire(brown, 17, 7, true);
               startTrain();
             }
@@ -355,12 +347,7 @@ public class Lab1 {
             else{
               stopTrain();
               red.acquire();
-              if(onDefaultTrack){
-                tsi.setSwitch(4, 9, TSimInterface.SWITCH_LEFT);
-                yellow.release();
-              }
-              else 
-                tsi.setSwitch(4, 9, TSimInterface.SWITCH_RIGHT);
+              releaseIfDefaultTrack(yellow, 4, 9, false);
               tryToAcquire(pink, 3, 11, false);
               startTrain();
             }  
@@ -369,12 +356,7 @@ public class Lab1 {
             if(direction){
               stopTrain();
               red.acquire();
-              if(onDefaultTrack){
-                tsi.setSwitch(3, 11, TSimInterface.SWITCH_LEFT);
-                pink.release();
-              }
-              else 
-                tsi.setSwitch(3, 11, TSimInterface.SWITCH_RIGHT);
+              releaseIfDefaultTrack(pink, 3, 11, false);
               tryToAcquire(yellow, 4, 9, false);
               startTrain();
             }
@@ -386,6 +368,20 @@ public class Lab1 {
         e.printStackTrace();
         System.exit(1);
       }
+    }
+    private void releaseIfDefaultTrack(Semaphore toRelease, int x, int y, boolean releaseRight) throws CommandException {
+      if(onDefaultTrack){
+        if(releaseRight)
+          tsi.setSwitch(x, y, TSimInterface.SWITCH_RIGHT);
+        else
+          tsi.setSwitch(x, y, TSimInterface.SWITCH_LEFT);
+        toRelease.release();
+        return;
+      }
+      if(releaseRight)
+        tsi.setSwitch(x, y, TSimInterface.SWITCH_LEFT);
+      else
+        tsi.setSwitch(x, y, TSimInterface.SWITCH_RIGHT);
     }
     private void tryToAcquire(Semaphore sem, int switchX, int switchY
     , boolean switchRightOnAcquire)throws CommandException {
@@ -404,21 +400,21 @@ public class Lab1 {
           tsi.setSwitch(switchX, switchY, TSimInterface.SWITCH_RIGHT);
       }
     }
-    public void changeDirection() throws CommandException, InterruptedException {
+    private void changeDirection() throws CommandException, InterruptedException {
       tsi.setSpeed(id, 0);
       Thread.sleep(3000);
       direction = !direction;
       maxSpeed = -maxSpeed;
       tsi.setSpeed(id, maxSpeed);
     }
-    public void stopTrain() throws CommandException {
+    private void stopTrain() throws CommandException {
       tsi.setSpeed(id, 0);
     }
-    public void startTrain() throws CommandException {
+    private void startTrain() throws CommandException {
       tsi.setSpeed(id, maxSpeed);
     }
   }
-  
+  /*
   private interface SensorAction {
     public void action(Train train) throws CommandException, InterruptedException;
   }
@@ -445,7 +441,7 @@ public class Lab1 {
         downAction.action(train);
     }
   }
-  
+  */
   private class Position {
     private final int x;
     private final int y;
