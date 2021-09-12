@@ -14,20 +14,18 @@ public class Lab1 {
   Semaphore red = new Semaphore(1, true);
   Semaphore pink = new Semaphore(0, true);
 
-  Map <Position,Sensor> sensors = new HashMap<>();
-
-  TSimInterface tsi;
+  Map <Position, Sensor> sensors = new HashMap<>();
 
   public Lab1(int speed1, int speed2) {
-    tsi = TSimInterface.getInstance();
-    putSensors();
-    Thread train1 = new Train(false, 1, speed1);
-    Thread train2 = new Train(true, 2, speed2);
+    
+    //putSensors();
+    Thread train1 = new Train(false, 1, speed1, true);
+    Thread train2 = new Train(true, 2, speed2, true);
 
     train1.start();
     train2.start();
   }
-  
+  /*
   public void putSensors(){
         // Sensors
     // 1
@@ -262,17 +260,21 @@ public class Lab1 {
       }
     }));
   }
-  
+  */
   
   private class Train extends Thread {
     private int id;
     private int maxSpeed;
     private boolean direction;
+    private boolean onDefaultTrack;
+    TSimInterface tsi;
 
-    public Train(boolean dir, int id, int maxSpeed) {
+    public Train(boolean dir, int id, int maxSpeed, boolean onDefaultTrack) {
       direction = dir;
       this.id = id;
       this.maxSpeed = maxSpeed;
+      this.onDefaultTrack = onDefaultTrack;
+      tsi = TSimInterface.getInstance();
     }
 
     @Override
@@ -286,13 +288,123 @@ public class Lab1 {
           Sensor hitSensor = sensors.get(new Position(x, y));
           if(se.getStatus() == SensorEvent.ACTIVE)
             hitSensor.doAction(this, direction);
-        }  
+
+          
+          if(se.getStatus() == SensorEvent.INACTIVE)
+            continue; 
+          Position sensorPos = new Position(x, y);
+          // 1 or 2 or 15 or 16
+          if(sensorPos.equals(new Position(14, 3)) || sensorPos.equals(new Position(14, 5))
+          || sensorPos.equals(new Position(13, 11)) || sensorPos.equals(new Position(13, 13))) {
+            if(direction)
+              changeDirection();
+          // 3 or 4
+          } else if(sensorPos.equals(new Position(9, 5)) || sensorPos.equals(new Position(6, 6))) {
+            if(direction)
+              blue.release();
+            else {
+              stopTrain();
+              blue.acquire();
+              startTrain();
+            }
+          // 5 or 6
+          } else if(sensorPos.equals(new Position(11, 7)) || sensorPos.equals(new Position(11, 8))) {
+            if(direction) {
+              stopTrain();
+              blue.acquire();
+              startTrain();
+            }
+            else 
+              blue.release();
+          // 7 or 8
+          } else if(sensorPos.equals(new Position(14, 7)) || sensorPos.equals(new Position(14, 8))){
+            if(direction)
+              purple.release();
+            else{
+              stopTrain();
+              purple.acquire();
+              if(onDefaultTrack){
+                tsi.setSwitch(17, 7, TSimInterface.SWITCH_RIGHT);
+                brown.release();
+              }
+              else 
+                tsi.setSwitch(17, 7, TSimInterface.SWITCH_LEFT);
+              tryToAcquire(yellow, 15, 9, true);
+              startTrain();
+            }
+          // 9 or 10
+          } else if(sensorPos.equals(new Position(12, 9)) || sensorPos.equals(new Position(12, 10))){
+            if(direction){
+              stopTrain();
+              purple.acquire();
+              if(onDefaultTrack){
+                tsi.setSwitch(15, 9, TSimInterface.SWITCH_RIGHT);
+                yellow.release();
+              }
+              else 
+                tsi.setSwitch(15, 9, TSimInterface.SWITCH_LEFT);
+              tryToAcquire(brown, 17, 7, true);
+              startTrain();
+            }
+            else
+              purple.release();
+          // 11 or 12
+          } else if(sensorPos.equals(new Position(7, 9)) || sensorPos.equals(new Position(7, 10))){
+            if(direction)
+              red.release();
+            else{
+              stopTrain();
+              red.acquire();
+              if(onDefaultTrack){
+                tsi.setSwitch(4, 9, TSimInterface.SWITCH_LEFT);
+                yellow.release();
+              }
+              else 
+                tsi.setSwitch(4, 9, TSimInterface.SWITCH_RIGHT);
+              tryToAcquire(pink, 3, 11, false);
+              startTrain();
+            }  
+          // 13 or 14
+          } else if(sensorPos.equals(new Position(6, 11)) || sensorPos.equals(new Position(6, 13))){
+            if(direction){
+              stopTrain();
+              red.acquire();
+              if(onDefaultTrack){
+                tsi.setSwitch(3, 11, TSimInterface.SWITCH_LEFT);
+                pink.release();
+              }
+              else 
+                tsi.setSwitch(3, 11, TSimInterface.SWITCH_RIGHT);
+              tryToAcquire(yellow, 4, 9, false);
+              startTrain();
+            }
+            else
+              red.release();
+          }
+        } 
       } catch (Exception e) {
         e.printStackTrace();
         System.exit(1);
       }
     }
-    public void changeDirection() throws CommandException, InterruptedException{
+    private void tryToAcquire(Semaphore sem, int switchX, int switchY
+    , boolean switchRightOnAcquire)throws CommandException {
+      if(sem.tryAcquire(1)){
+        onDefaultTrack = true;
+        if(switchRightOnAcquire)
+          tsi.setSwitch(switchX, switchY, TSimInterface.SWITCH_RIGHT);
+        else
+          tsi.setSwitch(switchX, switchY, TSimInterface.SWITCH_LEFT);
+      }
+      else{
+        onDefaultTrack = false;
+        if(switchRightOnAcquire)
+          tsi.setSwitch(switchX, switchY, TSimInterface.SWITCH_LEFT);
+        else
+          tsi.setSwitch(switchX, switchY, TSimInterface.SWITCH_RIGHT);
+      }
+    }
+    public void changeDirection() throws CommandException, InterruptedException {
       tsi.setSpeed(id, 0);
       Thread.sleep(3000);
       direction = !direction;
