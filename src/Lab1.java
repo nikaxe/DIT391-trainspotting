@@ -299,8 +299,12 @@ public class Lab1 {
           if(sensorPos.equals(new Position(13, 3)) || sensorPos.equals(new Position(13, 5))) {
             if(direction)
               changeDirection();
+          // 15 or 16
+          } else if(sensorPos.equals(new Position(13, 11)) || sensorPos.equals(new Position(13, 13))) {
+            if(!direction)
+              changeDirection();
           // 3 or 4
-          }  else if(sensorPos.equals(new Position(9, 5)) || sensorPos.equals(new Position(6, 6))) {
+          } else if(sensorPos.equals(new Position(9, 5)) || sensorPos.equals(new Position(6, 6))) {
             if(direction)
               blue.release();
             else {
@@ -309,39 +313,48 @@ public class Lab1 {
               startTrain();
             }
           // 5 or 6
-          } else if(sensorPos.equals(new Position(13, 7)) || sensorPos.equals(new Position(13, 8))) {
+          } else if(sensorPos.equals(new Position(12, 7)) || sensorPos.equals(new Position(12, 8))) {
             if(direction) {
               stopTrain();
-              purple.release();
               blue.acquire();
               startTrain();
             }
             else 
-              stopTrain();
               blue.release();
+          // 7 or 8
+          } else if(sensorPos.equals(new Position(13, 7)) || sensorPos.equals(new Position(13, 8))){
+            if(direction)
+              purple.release();
+            else{
+              stopTrain();
               purple.acquire();
               releaseIfDefaultTrack(brown, 17, 7, true);
               tryToAcquire(yellow, 15, 9, true);
-              startTrain();  
-          // 7 or 8
-         } else if(sensorPos.equals(new Position(9, 9)) || sensorPos.equals(new Position(9, 10))){
+              startTrain();
+            }
+          // 9 or 10
+          } else if(sensorPos.equals(new Position(11, 9)) || sensorPos.equals(new Position(11, 10))){
             if(direction){
               stopTrain();
-              red.release();
               purple.acquire();
               releaseIfDefaultTrack(yellow, 15, 9, true);
               tryToAcquire(brown, 17, 7, true);
               startTrain();
             }
+            else
+              purple.release();
+          // 11 or 12
+          } else if(sensorPos.equals(new Position(8, 9)) || sensorPos.equals(new Position(8, 10))){
+            if(direction)
+              red.release();
             else{
               stopTrain();
-              purple.release();
               red.acquire();
               releaseIfDefaultTrack(yellow, 4, 9, false);
               tryToAcquire(pink, 3, 11, false);
               startTrain();
-            }
-          // 9 or 10
+            }  
+          // 13 or 14
           } else if(sensorPos.equals(new Position(7, 11)) || sensorPos.equals(new Position(7, 13))){
             if(direction){
               stopTrain();
@@ -352,10 +365,6 @@ public class Lab1 {
             }
             else
               red.release();
-          // 11 or 12
-          } else if(sensorPos.equals(new Position(13, 11)) || sensorPos.equals(new Position(13, 13))) {
-            if(!direction)
-              changeDirection();
           }
         } 
       } catch (Exception e) {
