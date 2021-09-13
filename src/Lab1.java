@@ -299,12 +299,8 @@ public class Lab1 {
           if(sensorPos.equals(new Position(13, 3)) || sensorPos.equals(new Position(13, 5))) {
             if(direction)
               changeDirection();
-          // 15 or 16
-          } else if(sensorPos.equals(new Position(13, 11)) || sensorPos.equals(new Position(13, 13))) {
-            if(!direction)
-              changeDirection();
           // 3 or 4
-          } else if(sensorPos.equals(new Position(9, 5)) || sensorPos.equals(new Position(6, 6))) {
+          }  else if(sensorPos.equals(new Position(9, 5)) || sensorPos.equals(new Position(6, 6))) {
             if(direction)
               blue.release();
             else {
@@ -328,7 +324,7 @@ public class Lab1 {
               tryToAcquire(yellow, 15, 9, true);
               startTrain();  
           // 7 or 8
-         } else if(sensorPos.equals(new Position(11, 9)) || sensorPos.equals(new Position(11, 10))){
+         } else if(sensorPos.equals(new Position(9, 9)) || sensorPos.equals(new Position(9, 10))){
             if(direction){
               stopTrain();
               red.release();
@@ -356,6 +352,10 @@ public class Lab1 {
             }
             else
               red.release();
+          // 11 or 12
+          } else if(sensorPos.equals(new Position(13, 11)) || sensorPos.equals(new Position(13, 13))) {
+            if(!direction)
+              changeDirection();
           }
         } 
       } catch (Exception e) {
