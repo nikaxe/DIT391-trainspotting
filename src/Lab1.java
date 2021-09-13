@@ -295,9 +295,12 @@ public class Lab1 {
             continue; 
           Position sensorPos = new Position(x, y);
           
-          // 1 or 2 or 15 or 16
-          if(sensorPos.equals(new Position(14, 3)) || sensorPos.equals(new Position(14, 5))
-          || sensorPos.equals(new Position(13, 11)) || sensorPos.equals(new Position(13, 13))) {
+          // 1 or 2 
+          if(sensorPos.equals(new Position(14, 3)) || sensorPos.equals(new Position(14, 5))) {
+            if(direction)
+              changeDirection();
+          // 15 or 16
+          } else if(sensorPos.equals(new Position(13, 11)) || sensorPos.equals(new Position(13, 13))) {
             if(!direction)
               changeDirection();
           // 3 or 4
