@@ -4,7 +4,7 @@ import java.util.concurrent.Semaphore;
 
 import TSim.*;
 
-public class Lab1 {
+public class Lab1Old {
   // Semaphores
   Semaphore brown = new Semaphore(0, true);
   Semaphore blue = new Semaphore(1, true);
@@ -16,7 +16,7 @@ public class Lab1 {
 
   //Map <Position, Sensor> sensors = new HashMap<>();
 
-  public Lab1(int speed1, int speed2) {
+  public Lab1Old(int speed1, int speed2) {
     
     //putSensors();
     Thread train1 = new Train(false, 1, speed1, true);
@@ -313,39 +313,48 @@ public class Lab1 {
               startTrain();
             }
           // 5 or 6
-          } else if(sensorPos.equals(new Position(13, 7)) || sensorPos.equals(new Position(13, 8))) {
+          } else if(sensorPos.equals(new Position(12, 7)) || sensorPos.equals(new Position(12, 8))) {
             if(direction) {
               stopTrain();
-              purple.release();
               blue.acquire();
               startTrain();
             }
             else 
-              stopTrain();
               blue.release();
+          // 7 or 8
+          } else if(sensorPos.equals(new Position(13, 7)) || sensorPos.equals(new Position(13, 8))){
+            if(direction)
+              purple.release();
+            else{
+              stopTrain();
               purple.acquire();
               releaseIfDefaultTrack(brown, 17, 7, true);
               tryToAcquire(yellow, 15, 9, true);
-              startTrain();  
-          // 7 or 8
-         } else if(sensorPos.equals(new Position(11, 9)) || sensorPos.equals(new Position(11, 10))){
+              startTrain();
+            }
+          // 9 or 10
+          } else if(sensorPos.equals(new Position(11, 9)) || sensorPos.equals(new Position(11, 10))){
             if(direction){
               stopTrain();
-              red.release();
               purple.acquire();
               releaseIfDefaultTrack(yellow, 15, 9, true);
               tryToAcquire(brown, 17, 7, true);
               startTrain();
             }
+            else
+              purple.release();
+          // 11 or 12
+          } else if(sensorPos.equals(new Position(8, 9)) || sensorPos.equals(new Position(8, 10))){
+            if(direction)
+              red.release();
             else{
               stopTrain();
-              purple.release();
               red.acquire();
               releaseIfDefaultTrack(yellow, 4, 9, false);
               tryToAcquire(pink, 3, 11, false);
               startTrain();
-            }
-          // 9 or 10
+            }  
+          // 13 or 14
           } else if(sensorPos.equals(new Position(7, 11)) || sensorPos.equals(new Position(7, 13))){
             if(direction){
               stopTrain();
