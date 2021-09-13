@@ -296,7 +296,7 @@ public class Lab1 {
           Position sensorPos = new Position(x, y);
           
           // 1 or 2 
-          if(sensorPos.equals(new Position(14, 3)) || sensorPos.equals(new Position(14, 5))) {
+          if(sensorPos.equals(new Position(13, 3)) || sensorPos.equals(new Position(13, 5))) {
             if(direction)
               changeDirection();
           // 15 or 16
@@ -313,7 +313,7 @@ public class Lab1 {
               startTrain();
             }
           // 5 or 6
-          } else if(sensorPos.equals(new Position(11, 7)) || sensorPos.equals(new Position(11, 8))) {
+          } else if(sensorPos.equals(new Position(12, 7)) || sensorPos.equals(new Position(12, 8))) {
             if(direction) {
               stopTrain();
               blue.acquire();
@@ -322,7 +322,7 @@ public class Lab1 {
             else 
               blue.release();
           // 7 or 8
-          } else if(sensorPos.equals(new Position(14, 7)) || sensorPos.equals(new Position(14, 8))){
+          } else if(sensorPos.equals(new Position(13, 7)) || sensorPos.equals(new Position(13, 8))){
             if(direction)
               purple.release();
             else{
@@ -333,7 +333,7 @@ public class Lab1 {
               startTrain();
             }
           // 9 or 10
-          } else if(sensorPos.equals(new Position(12, 9)) || sensorPos.equals(new Position(12, 10))){
+          } else if(sensorPos.equals(new Position(11, 9)) || sensorPos.equals(new Position(11, 10))){
             if(direction){
               stopTrain();
               purple.acquire();
@@ -344,7 +344,7 @@ public class Lab1 {
             else
               purple.release();
           // 11 or 12
-          } else if(sensorPos.equals(new Position(7, 9)) || sensorPos.equals(new Position(7, 10))){
+          } else if(sensorPos.equals(new Position(8, 9)) || sensorPos.equals(new Position(8, 10))){
             if(direction)
               red.release();
             else{
@@ -355,7 +355,7 @@ public class Lab1 {
               startTrain();
             }  
           // 13 or 14
-          } else if(sensorPos.equals(new Position(6, 11)) || sensorPos.equals(new Position(6, 13))){
+          } else if(sensorPos.equals(new Position(7, 11)) || sensorPos.equals(new Position(7, 13))){
             if(direction){
               stopTrain();
               red.acquire();
