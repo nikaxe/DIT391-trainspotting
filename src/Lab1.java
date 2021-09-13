@@ -299,12 +299,8 @@ public class Lab1 {
           if(sensorPos.equals(new Position(13, 3)) || sensorPos.equals(new Position(13, 5))) {
             if(direction)
               changeDirection();
-          // 15 or 16
-          } else if(sensorPos.equals(new Position(13, 11)) || sensorPos.equals(new Position(13, 13))) {
-            if(!direction)
-              changeDirection();
           // 3 or 4
-          } else if(sensorPos.equals(new Position(9, 5)) || sensorPos.equals(new Position(6, 6))) {
+          }  else if(sensorPos.equals(new Position(9, 5)) || sensorPos.equals(new Position(6, 6))) {
             if(direction)
               blue.release();
             else {
@@ -313,7 +309,7 @@ public class Lab1 {
               startTrain();
             }
           // 5 or 6
-          } else if(sensorPos.equals(new Position(12, 7)) || sensorPos.equals(new Position(12, 8))) {
+          } else if(sensorPos.equals(new Position(11, 7)) || sensorPos.equals(new Position(11, 8))) {
             if(direction) {
               stopTrain();
               blue.acquire();
@@ -322,7 +318,7 @@ public class Lab1 {
             else 
               blue.release();
           // 7 or 8
-          } else if(sensorPos.equals(new Position(13, 7)) || sensorPos.equals(new Position(13, 8))){
+          } else if(sensorPos.equals(new Position(14, 7)) || sensorPos.equals(new Position(14, 8))){
             if(direction)
               purple.release();
             else{
@@ -355,7 +351,7 @@ public class Lab1 {
               startTrain();
             }  
           // 13 or 14
-          } else if(sensorPos.equals(new Position(7, 11)) || sensorPos.equals(new Position(7, 13))){
+          } else if(sensorPos.equals(new Position(6, 11)) || sensorPos.equals(new Position(6, 13))){
             if(direction){
               stopTrain();
               red.acquire();
@@ -365,6 +361,10 @@ public class Lab1 {
             }
             else
               red.release();
+          // 15 or 16
+          } else if(sensorPos.equals(new Position(13, 11)) || sensorPos.equals(new Position(13, 13))) {
+            if(!direction)
+              changeDirection();
           }
         } 
       } catch (Exception e) {
