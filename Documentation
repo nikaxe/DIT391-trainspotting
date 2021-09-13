@@ -1,0 +1,71 @@
+This program is designed to give behaviour to the trains in the
+tsim simulator. It is not a generic solution but a specific one 
+for the set of track we were given. The behaviour allows the two 
+trains to avoid collisions, deadlocks and starvation using sensors 
+and semaphores.  
+
+Placement of sensors and maximum train speed:
+When placing the sensors we had to keep in three things in mind, 
+1. The braking distance of the trains at different speeds
+2. The amount of sensors should be kept as low as possible and
+3. The time it took for a really slow train to release a critical section
+
+The first condition, the braking distance, came into play in two different scenarios.
+Firstly when a train approached a station and had to brake and change direction,
+the most important thing in this scenario was to ensure that whatever max speed we could reach would brake the train before it collided with the end of the track.
+The second scenario came into play when a train approached a critical section, here we had to place the sensors so the train stopped before landing on a switch or colliding with the other train.
+
+The second condition was mostly about making sure we added no unneccesary sensors for the expected behaviour. We thought about trying to limit the sensors on the switched/concurrent
+tracks to 1 but when later realized that having one sensor is in essence the same as having two sensors close together and can cause problematic behaviour when we reach scenario three.
+
+This leads us to the third and final thing we 
+
+
+Critical sections:
+Our choice of critical sections are based on where both trains could
+possibly share a piece of track, which is the red, purple and blue tracks
+in the reference picture. The other colours are not critical sections but 
+the "default track" and used when deciding what track to use on parallell 
+sections. All of the coloured tracks are represented as binary semaphores 
+in the code. 
+
+Testing
+We chose to test a few different cases. 
+1. Both trains at a very low speed 
+2. One train much faster than the other 
+3. Both trains at a similar speed
+
+The first test ensures that our system actually does what we want it to and 
+that there are no logic errors. It also makes sure that there isn't any minimum
+required speed for the trains. 
+
+The second test check if a faster train can overtake a slow train without any issues
+and when pushing the faster train even faster helps to see what the fastest speed our 
+solution allows for.  
+
+The third test checks that the trainflow is good and that the braking distance is 
+
+30min test, default sim speed 
+1 1 ok
+1 15 ok
+1 16 ok
+1 17 ok 
+1 18 ok
+1 19 ok 
+1 20 ok
+26 26 ok 
+10 15 ok
+15 20 ok
+20 1
+20 18
+19 20
+17 20
+20 15
+21 1 crash (collision for t1)
+1 21 crash (collision for t2)
+1 22 crash (collision for t2)
+1 23 crash (collision for t2)
+1 24 crash (collision for t2)
+15 25 crash (train on switch) * 2
+ 
+
