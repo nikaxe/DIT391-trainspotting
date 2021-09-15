@@ -137,7 +137,7 @@ public class Lab1 {
      * @param toRelease the semaphore to release
      * @param x X position of switch
      * @param y Y position of switch
-     * @param releaseRight 
+     * @param releaseRight Set switch in the right/left position if on default track
      * @throws CommandException
      */
     private void releaseIfDefaultTrack(Semaphore toRelease, int x, int y, boolean releaseRight) throws CommandException {
