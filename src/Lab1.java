@@ -20,7 +20,7 @@ public class Lab1 {
   }
   
   /**
-   * Train model class
+   * Representation of the trains in the simulator. 
    */
   private class Train extends Thread {
     private final int id;
@@ -134,6 +134,7 @@ public class Lab1 {
 
     /**
      * Used by the train when leaving a parallel track.
+     * Releases the semaphore if on a default track and sets switch
      * @param toRelease the semaphore to release
      * @param x X position of switch
      * @param y Y position of switch
@@ -159,7 +160,7 @@ public class Lab1 {
 
     /**
      * Used when a train needs to decide if it can use the default
-     * track on parallel sections.
+     * track on parallel sections. Acquires semaphore and sets switch if it can.
      * @param sem The semaphore to try to acquire.
      * @param switchX X position of the switch before the semaphore.
      * @param switchY Y position of the switch before the semaphore.
@@ -219,7 +220,7 @@ public class Lab1 {
   }
 
   /**
-   * Used to store and compare 2D positions  
+   * Used to compare 2D positions  
    */
   private class Position {
     private final int x;
